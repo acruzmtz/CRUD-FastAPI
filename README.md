@@ -8,8 +8,8 @@ you just need to create your virtual environment and run this command
 
     pip install -r requirements.txt
 
-if you get an error with mysqlclient library, consult this [documentation](https://pypi.org/project/mysqlclient/) 
-to install in virtualenv in case you have MySQL in your computer.
+if you get an error with the mysqlclient library, check out this [documentation](https://pypi.org/project/mysqlclient/) 
+to install in virtualenv in case you have MySQL on your computer.
 
 then create your database with your own name and modify the database.py file
 

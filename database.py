@@ -9,6 +9,7 @@ connection = MySQLDatabase(
 
 
 class User(Model):
+    """ Create model of database """
     username = CharField(max_length=50)
     email = CharField(max_length=50)
 

@@ -32,7 +32,7 @@ async def index():
 # this route is to create new users, just support the post method (add new user to database)
 @app.post('/users')
 async def create_user(user_request: UserRequestModel):
-    """ This function just allow post request, and add new user """
+    """ class UserUpdateModel as parameter, create new user and return user created """
 
     user = User.create(
         username=user_request.username,
@@ -42,9 +42,13 @@ async def create_user(user_request: UserRequestModel):
     return user
 
 
-# this function is to return user if user exist in the database
 @app.get('/get/{user_id}')
 async def get_user(user_id):
+    """
+    this function is to return user if user exist in the database, needs user_id:int
+    return user selected
+    """
+
     user = User.select().where(User.id == user_id).first()
 
     if not user:
@@ -59,6 +63,11 @@ async def get_user(user_id):
 
 @app.put('/update')
 async def update_user(user_to_update: UserUpdateModel):
+    """
+    class UserUpdateModel as parameter, if user_id exist update username and email
+    return user updated
+    """
+
     user = User.select().where(User.id == user_to_update.id).first()
 
     if not user:
@@ -73,9 +82,13 @@ async def update_user(user_to_update: UserUpdateModel):
     )
 
 
-# this function is to delete user if user exist in the database
 @app.delete('/delete/{user_id}')
 async def delete_user(user_id):
+    """
+    this function is to delete user if user_id exist in the database,
+    needs user_id:int and return user deleted
+    """
+    
     user = User.select().where(User.id == user_id).first()
 
     if not user:

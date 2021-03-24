@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from database import connection
-from database import User
-from schemas import UserRequestModel, UserUpdateModel
+from database import connection, User
+from schemas import UserRequestModel, UserUpdateModel, UserResponseModel
 
 app = FastAPI(
-    title="My fist API",
-    description="This is a test of API with FastAPI",
+    title="My first API",
+    description="This is a simple API with FastAPI (CRUD)",
     version="1.0.1"
 )
 
@@ -51,19 +50,27 @@ async def get_user(user_id):
     if not user:
         return HTTPException(404, 'User not found')
 
-    return user
+    return UserResponseModel(
+        id=user.id,
+        username=user.username,
+        email=user.email
+    )
 
 
-@app.put('/update/{user_id}')
+@app.put('/update')
 async def update_user(user_to_update: UserUpdateModel):
     user = User.select().where(User.id == user_to_update.id).first()
 
     if not user:
         return HTTPException(404, 'User not found')
     else:
-        user_updated = User.update(username=user_to_update.username, email=user_to_update.email).where(User.id == user_to_update.id)
+        User.update(username=user_to_update.username, email=user_to_update.email).where(User.id == user_to_update.id).execute()
 
-    return True
+    return UserResponseModel(
+        id=user.id,
+        username=user_to_update.username,
+        email=user_to_update.email
+    )
 
 
 # this function is to delete user if user exist in the database
@@ -76,4 +83,4 @@ async def delete_user(user_id):
     else:
         user.delete_instance()
 
-    return "User deleted successfully"
+    return f"User {user.username} deleted successfully"
